@@ -7,7 +7,6 @@ import { globalEnv } from "../../config/env";
 import { UserItem, Pagination, Spinner, SearchInput } from "../../components/index";
 import { IUserType, IUserItemType } from "../../models";
 import * as Styled from "./UserList.styles";
-import { GITHUB_TOKEN } from "../../shared/constants";
 
 const UserList = ({ location }: RouteComponentProps) => {
   const [currentPage, setCurrentPage] = useState(Number(location.pathname.split("/")[2]));
@@ -21,7 +20,7 @@ const UserList = ({ location }: RouteComponentProps) => {
         params: { per_page: 5, page: currentPage },
         headers: {
           accept: "application/vnd.github.v3+json",
-          Authorization: `token ${GITHUB_TOKEN}`,
+          Authorization: `token ${globalEnv.GITHUB_TOKEN}`,
         },
       })
       .then(res => {
@@ -44,7 +43,7 @@ const UserList = ({ location }: RouteComponentProps) => {
           params: { per_page: 5, page: page || currentPage },
           headers: {
             accept: "application/vnd.github.v3+json",
-            Authorization: `token ${GITHUB_TOKEN}`,
+            Authorization: `token ${globalEnv.GITHUB_TOKEN}`,
           },
         })
         .then(res => {

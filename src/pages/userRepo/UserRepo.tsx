@@ -8,18 +8,17 @@ import * as Styled from "./UserRepo.styles";
 import { globalEnv } from "../../config/env";
 import { IUserRepoItemType } from "../../models";
 import { Spinner } from "../../components/index";
-import { GITHUB_TOKEN } from "../../shared/constants";
 
 const UserRepo = ({ location }: RouteComponentProps) => {
   const [pageNumber, setPageNumber] = useState(10);
   const [isRefetching, setIsRefetching] = useState(false);
   const queryClient = useQueryClient();
-  const { data, isLoading, status } = useQuery("userRepo", () =>
+  const { data, isLoading } = useQuery("userRepo", () =>
     axios
       .get(globalEnv.API_ENDPOINT + `/users/${location.pathname.split("/")[3]}/repos?per_page=${pageNumber}`, {
         headers: {
           accept: "application/vnd.github.v3+json",
-          Authorization: `token ${GITHUB_TOKEN}`,
+          Authorization: `token ${globalEnv.GITHUB_TOKEN}`,
         },
       })
       .then(res => {
