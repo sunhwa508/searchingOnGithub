@@ -5,7 +5,6 @@ import axios from "axios";
 import dayjs from "dayjs";
 
 import * as Styled from "./UserRepo.styles";
-import { globalEnv } from "../../config/env";
 import { IUserRepoItemType } from "../../models";
 import { Spinner } from "../../components/index";
 
@@ -14,17 +13,10 @@ const UserRepo = ({ location }: RouteComponentProps) => {
   const [isRefetching, setIsRefetching] = useState(false);
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery("userRepo", () =>
-    axios
-      .get(globalEnv.API_ENDPOINT + `/users/${location.pathname.split("/")[3]}/repos?per_page=${pageNumber}`, {
-        headers: {
-          accept: "application/vnd.github.v3+json",
-          Authorization: `token ${globalEnv.GITHUB_TOKEN}`,
-        },
-      })
-      .then(res => {
-        setIsRefetching(true);
-        return res.data as IUserRepoItemType[];
-      }),
+    axios.get(`/users/${location.pathname.split("/")[3]}/repos?per_page=${pageNumber}`, {}).then(res => {
+      setIsRefetching(true);
+      return res.data as IUserRepoItemType[];
+    }),
   );
 
   const prefetchRepo = async () => {

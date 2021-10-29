@@ -3,7 +3,6 @@ import axios from "axios";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 
-import { globalEnv } from "../../config/env";
 import { UserItem, Pagination, Spinner, SearchInput } from "../../components/index";
 import { IUserType, IUserItemType } from "../../models";
 import * as Styled from "./UserList.styles";
@@ -16,12 +15,8 @@ const UserList = ({ location }: RouteComponentProps) => {
 
   const { data, isLoading } = useQuery("userList", () =>
     axios
-      .get(globalEnv.API_ENDPOINT + `/search/users?&q=type:user+${search}`, {
+      .get(`/search/users?&q=type:user+${search}`, {
         params: { per_page: 5, page: currentPage },
-        headers: {
-          accept: "application/vnd.github.v3+json",
-          Authorization: `token ${globalEnv.GITHUB_TOKEN}`,
-        },
       })
       .then(res => {
         return res.data as IUserType;
@@ -39,12 +34,8 @@ const UserList = ({ location }: RouteComponentProps) => {
   const prefetchUsers = async (page?: number) => {
     await queryClient.prefetchQuery("userList", () =>
       axios
-        .get(globalEnv.API_ENDPOINT + `/search/users?&q=type:user+${search}`, {
+        .get(`/search/users?&q=type:user+${search}`, {
           params: { per_page: 5, page: page || currentPage },
-          headers: {
-            accept: "application/vnd.github.v3+json",
-            Authorization: `token ${globalEnv.GITHUB_TOKEN}`,
-          },
         })
         .then(res => {
           return res.data as IUserType;

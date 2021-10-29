@@ -1,10 +1,16 @@
 import React from "react";
 import "./App.css";
+import axios from "axios";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { Header } from "./components";
 import { UserList, UserRepo } from "./pages";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { globalEnv } from "./config/env";
 
 function App() {
+  axios.defaults.baseURL = globalEnv.API_ENDPOINT;
+  axios.defaults.headers.common["Authorization"] = `token ${globalEnv.GITHUB_TOKEN}`;
+  axios.defaults.headers.common["accept"] = "application/vnd.github.v3+json";
+
   return (
     <>
       <Header />
